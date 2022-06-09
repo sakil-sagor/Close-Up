@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { Box } from '@chakra-ui/react';
+import React from 'react';
+import ChatBox from '../Components/ChatBox';
+import SideDrawer from '../Components/miscellaneous/SideDrawer';
+import MyChat from '../Components/MyChat';
+import { ChatState } from '../Context/ChatProvider';
 
 const ChatPage = () => {
-    const [chats, setChats] = useState([]);
-    useEffect(() => {
-        const url = `http://localhost:5000/api/chats`;
-        fetch(url)
-            .then(res => res.json())
-            .then(data => setChats(data))
-    }, [])
-    console.log(chats);
+    const { user } = ChatState();
     return (
-        <div>
-            {
-                chats.map(chat => <div key={chat._id}>{chat.chatName}</div>)
-            }
-        </div>
+        <div style={{ width: "100%" }}>
+            {user && <SideDrawer></SideDrawer>}
+            <Box display="flex" justifyContent={"space-between"} w="100%" h="91.5vh" p="10px">
+                {user && <MyChat></MyChat>}
+                {user && <ChatBox></ChatBox>}
+            </Box>
+        </div >
     );
 };
 
