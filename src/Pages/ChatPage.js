@@ -7,7 +7,9 @@ import { ChatState } from '../Context/ChatProvider';
 
 const ChatPage = () => {
     const { user } = ChatState();
+    console.log(user);
     return (
+
         <div style={{ width: "100%" }}>
             {user && <SideDrawer></SideDrawer>}
             <Box display="flex" justifyContent={"space-between"} w="100%" h="91.5vh" p="10px">
@@ -15,6 +17,7 @@ const ChatPage = () => {
                 {user && <ChatBox></ChatBox>}
             </Box>
         </div >
+
     );
 };
 
