@@ -1,13 +1,13 @@
 import { AddIcon } from '@chakra-ui/icons';
 import { Box, Button, Stack, Text, useToast } from '@chakra-ui/react';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getSender } from '../config/ChatLogics';
 import { ChatState } from '../Context/ChatProvider';
 import ChatLoading from './ChatLoading';
 import GroupChatModal from './miscellaneous/GroupChatModal';
 
-const MyChat = () => {
+const MyChat = ({ fetchAgain, setFetchAgain }) => {
     const { user, selectedChat, setSelectedChat, chats, setChats } = ChatState();
     const [loggedUser, setLoggedUser] = useState();
     const toast = useToast();
@@ -20,9 +20,7 @@ const MyChat = () => {
                 },
             };
             const { data } = await axios.get("http://localhost:5000/api/chat", config);
-            console.log(data);
             setChats(data);
-            console.log(chats);
         } catch (error) {
             toast({
                 title: 'Error Occured',
@@ -38,11 +36,11 @@ const MyChat = () => {
     useEffect(() => {
         setLoggedUser(JSON.parse(localStorage.getItem("userInfo")));
         fetchChats();
-    }, [])
+    }, [fetchAgain])
 
     return (
         <Box
-            d={{ base: selectedChat ? "none" : "flex", md: "flex" }}
+            display={{ base: selectedChat ? "none" : "flex", md: "flex" }}
             flexDir="column"
             alignItems="center"
             p={3}
