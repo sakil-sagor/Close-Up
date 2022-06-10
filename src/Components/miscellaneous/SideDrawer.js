@@ -1,7 +1,6 @@
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import {
-    Avatar, Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter,
-    DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Text, Tooltip, useDisclosure, useToast
+    Avatar, Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay, Input, Menu, MenuButton, MenuDivider, MenuItem, MenuList, Spinner, Text, Tooltip, useDisclosure, useToast
 } from '@chakra-ui/react';
 import axios from 'axios';
 import React, { useState } from 'react';
@@ -18,7 +17,7 @@ const SideDrawer = () => {
     const [loadingChat, setLoadingChat] = useState();
 
     const history = useHistory();
-    const { user } = ChatState();
+    const { user, setSelectedChat, chats, setChats } = ChatState();
     const { isOpen, onOpen, onClose } = useDisclosure()
     const btnRef = React.useRef()
     const toast = useToast();
@@ -32,7 +31,7 @@ const SideDrawer = () => {
 
         if (!search) {
             toast({
-                title: 'Please enter a valid name or email',
+                title: 'Please enter a name or email',
                 status: 'warning',
                 duration: 5000,
                 isClosable: true,
@@ -65,9 +64,36 @@ const SideDrawer = () => {
     }
 
 
-    const accessChat = (userId) => {
+    const accessChat = async (userId) => {
 
+        try {
+            setLoadingChat(true);
+            const config = {
+                headers: {
+                    "Content-type": "application/json",
+                    Authorization: `Bearer ${user.token}`,
+                },
+            };
+            const { data } = await axios.post(`http://localhost:5000/api/chat`, { userId }, config);
+
+            if (!chats.find((c) => c._id === data._id)) {
+                setChats([data, ...chats]);
+            }
+            setSelectedChat(data);
+            setLoadingChat(false);
+            onClose()
+        } catch (error) {
+            toast({
+                title: 'Error fetching the chat',
+                description: error.message,
+                status: 'error',
+                duration: 5000,
+                isClosable: true,
+                position: "bottom-left"
+            })
+        }
     }
+
 
     return (
         <>
@@ -154,7 +180,7 @@ const SideDrawer = () => {
                         {loading ? (<ChatLoading></ChatLoading>)
                             :
                             (
-                                serachResult?.map(user => (
+                                serachResult.map(user => (
                                     <UserListItem
                                         key={user._id}
                                         user={user}
@@ -162,14 +188,12 @@ const SideDrawer = () => {
                                     ></UserListItem>
                                 ))
                             )}
+                        {
+                            loadingChat && <Spinner ml="auto" display={"flex"}></Spinner>
+                        }
                     </DrawerBody>
 
-                    <DrawerFooter>
-                        <Button variant='outline' mr={3} onClick={onClose}>
-                            Cancel
-                        </Button>
-                        <Button colorScheme='blue'>Save</Button>
-                    </DrawerFooter>
+
                 </DrawerContent>
             </Drawer>
         </>
