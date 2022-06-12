@@ -31,7 +31,6 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessage }) => {
                 },
             };
             const { data } = await axios.get(`https://we-are-buddy.herokuapp.com/api/user?search=${search}`, config);
-            console.log(data);
             setLoading(false);
             setSearchResult(data);
         } catch (error) {

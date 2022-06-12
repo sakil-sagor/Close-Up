@@ -1,5 +1,5 @@
 import { Box, Container, Tab, TabList, TabPanel, TabPanels, Tabs, Text } from '@chakra-ui/react';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import Login from '../Components/Authentication/Login';
 import Signup from '../Components/Authentication/Signup';
@@ -9,7 +9,6 @@ const HomePage = () => {
 
     useEffect(() => {
         const user = JSON.parse(localStorage.getItem("userInfo"));
-        console.log(user);
         if (user) {
             history.push("/chats");
         }

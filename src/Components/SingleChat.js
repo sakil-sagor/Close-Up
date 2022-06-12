@@ -1,5 +1,5 @@
-import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Box, FormControl, IconButton, Input, Spinner, Text, useToast } from "@chakra-ui/react";
+import { ArrowBackIcon, ArrowRightIcon } from "@chakra-ui/icons";
+import { Box, Button, FormControl, IconButton, Input, Spinner, Text, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Lottie from "react-lottie";
@@ -85,6 +85,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         selectedChatCompare = selectedChat;
     }, [selectedChat])
 
+    // send msg by click key enter 
     const sendMessage = async (event) => {
         if (event.key === "Enter" && newMessage) {
             socket.emit("stop typing", selectedChat._id)
@@ -104,7 +105,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                     },
                     config
                 );
-                console.log(data);
                 socket.emit("new message", data)
                 setMessages([...messages, data]);
             } catch (error) {
@@ -119,7 +119,40 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
         }
     };
-
+    // send msg by click button 
+    const sendMessageByClick = async () => {
+        if (newMessage) {
+            socket.emit("stop typing", selectedChat._id)
+            try {
+                const config = {
+                    headers: {
+                        "Content-type": "application/json",
+                        Authorization: `Bearer ${user.token}`,
+                    },
+                };
+                setNewMessage([]);
+                const { data } = await axios.post(
+                    `https://we-are-buddy.herokuapp.com/api/message`,
+                    {
+                        content: newMessage,
+                        chatId: selectedChat._id,
+                    },
+                    config
+                );
+                socket.emit("new message", data)
+                setMessages([...messages, data]);
+            } catch (error) {
+                toast({
+                    title: "Error Occured!",
+                    description: "Failed to send the Messages",
+                    status: "error",
+                    duration: 5000,
+                    isClosable: true,
+                    position: "bottom",
+                });
+            }
+        }
+    };
 
 
     useEffect(() => {
@@ -137,6 +170,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
         });
     });
+
 
     const typingHandler = (e) => {
         setNewMessage(e.target.value);
@@ -226,7 +260,9 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                                 </div>
                             )
                             }
-                            <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+                            <FormControl onKeyDown={sendMessage} isRequired mt={3}
+
+                            >
                                 {isTyping ? <div>
                                     <Lottie
                                         options={defaultOptions}
@@ -234,14 +270,25 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                                         style={{ marginBottom: 15, marginLeft: 0 }}
                                     />
                                 </div> : (<></>)}
-                                <Input
-                                    variant="filled"
-                                    bg="#E0E0E0"
-                                    placeholder="Enter a message.."
-                                    value={newMessage}
-                                    onChange={typingHandler}
-                                />
+                                <div style={{ display: "flex" }}  >
+                                    <div style={{ width: "100%" }}>
+                                        <Input
+                                            variant="filled"
+                                            bg="#E0E0E0"
+                                            placeholder="Enter a message.."
+                                            value={newMessage}
+                                            onChange={typingHandler}
+
+                                        />
+                                    </div>
+                                    <div>
+                                        < Button onClick={sendMessageByClick}>
+                                            <ArrowRightIcon ></ArrowRightIcon>
+                                        </Button>
+                                    </div>
+                                </div>
                             </FormControl>
+
                         </Box>
                     </>
                 ) : (

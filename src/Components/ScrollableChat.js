@@ -10,9 +10,6 @@ import { ChatState } from "../Context/ChatProvider";
 
 const ScrollableChat = ({ messages }) => {
     const { user } = ChatState();
-    console.log(messages);
-    messages.map((m, i) => (console.log(m.sender.name)));
-
     return (
         <ScrollableFeed>
             {messages &&
