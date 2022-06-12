@@ -13,7 +13,7 @@ import ScrollableChat from "./ScrollableChat";
 import "./styles.css";
 
 
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "https://we-are-buddy.herokuapp.com";
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
