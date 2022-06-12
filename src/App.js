@@ -8,15 +8,17 @@ import HomePage from "./Pages/HomePage";
 function App() {
   return (
     <div className="App">
-      <ChatProvider>
-        <Router>
+
+      <Router>
+        <ChatProvider>
           <Switch>
             <Route path="/" component={HomePage} exact />
             {/* <Route path="/home" component={HomePage} exact /> */}
             <Route path="/chats" component={ChatPage} exact />
           </Switch>
-        </Router>
-      </ChatProvider>
+        </ChatProvider>
+      </Router>
+
     </div>
   );
 }
