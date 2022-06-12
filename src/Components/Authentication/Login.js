@@ -1,6 +1,6 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, useToast, VStack } from '@chakra-ui/react';
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const Login = () => {
@@ -34,7 +34,7 @@ const Login = () => {
                     "content-type": "application/json",
                 },
             };
-            const { data } = await axios.post("http://localhost:5000/api/user/login", { email, password }, config);
+            const { data } = await axios.post("https://we-are-buddy.herokuapp.com/api/user/login", { email, password }, config);
             toast({
                 title: 'Login Successful',
                 status: 'success',

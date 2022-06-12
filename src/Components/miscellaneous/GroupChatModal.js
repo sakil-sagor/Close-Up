@@ -1,6 +1,6 @@
 import { Box, Button, FormControl, Input, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, useDisclosure, useToast } from '@chakra-ui/react';
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { ChatState } from '../../Context/ChatProvider';
 import UserBadgeItem from '../UserAvatar/UserBadgeItem';
 import UserListItem from '../UserAvatar/UserListItem';
@@ -29,7 +29,7 @@ const GroupChatModal = ({ children }) => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get(`http://localhost:5000/api/user?search=${search}`, config);
+            const { data } = await axios.get(`https://we-are-buddy.herokuapp.com/api/user?search=${search}`, config);
             console.log(data);
             setLoading(false);
             setSearchResult(data);
@@ -64,7 +64,7 @@ const GroupChatModal = ({ children }) => {
                 },
             };
             const { data } = await axios.post(
-                `http://localhost:5000/api/chat/group`,
+                `https://we-are-buddy.herokuapp.com/api/chat/group`,
                 {
                     name: groupChatName,
                     users: JSON.stringify(selectedUsers.map((u) => u._id)),

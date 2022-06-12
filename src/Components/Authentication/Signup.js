@@ -1,6 +1,6 @@
 import { Button, FormControl, FormLabel, Input, InputGroup, InputRightElement, useToast, VStack } from '@chakra-ui/react';
 import axios from 'axios';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 const Signup = () => {
@@ -94,7 +94,7 @@ const Signup = () => {
             };
 
 
-            const { data } = await axios.post("http://localhost:5000/api/user", { name, email, password, picture }, config);
+            const { data } = await axios.post("https://we-are-buddy.herokuapp.com/api/user", { name, email, password, picture }, config);
             toast({
                 title: 'Registration Successful',
                 status: 'success',

@@ -59,7 +59,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             setLoading(true);
 
             const { data } = await axios.get(
-                `http://localhost:5000/api/message/${selectedChat._id}`,
+                `https://we-are-buddy.herokuapp.com/api/message/${selectedChat._id}`,
                 config
             );
 
@@ -97,7 +97,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 };
                 setNewMessage([]);
                 const { data } = await axios.post(
-                    `http://localhost:5000/api/message`,
+                    `https://we-are-buddy.herokuapp.com/api/message`,
                     {
                         content: newMessage,
                         chatId: selectedChat._id,

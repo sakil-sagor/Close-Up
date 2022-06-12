@@ -19,7 +19,7 @@ const MyChat = ({ fetchAgain, setFetchAgain }) => {
                     Authorization: `Bearer ${user.token}`,
                 },
             };
-            const { data } = await axios.get("http://localhost:5000/api/chat", config);
+            const { data } = await axios.get("https://we-are-buddy.herokuapp.com/api/chat", config);
             setChats(data);
         } catch (error) {
             toast({
