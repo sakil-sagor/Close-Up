@@ -14,21 +14,30 @@ const ChatProvider = ({ children }) => {
         const userInfo = JSON.parse(localStorage.getItem("userInfo"));
         setUser(userInfo);
 
-        if (!userInfo) {
-            history.push("/")
-        }
+        if (!userInfo) history.push("/");
 
-    }, [history])
-
+    }, [history]);
 
     return (
-        <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats, notification, setNotification }}>{children}</ChatContext.Provider>
+        <ChatContext.Provider
+            value={{
+                selectedChat,
+                setSelectedChat,
+                user,
+                setUser,
+                notification,
+                setNotification,
+                chats,
+                setChats,
+            }}
+        >
+            {children}
+        </ChatContext.Provider>
     );
 };
 
 export const ChatState = () => {
     return useContext(ChatContext);
-}
+};
 
 export default ChatProvider;
-

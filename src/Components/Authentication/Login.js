@@ -40,12 +40,19 @@ const Login = () => {
                 status: 'success',
                 duration: 5000,
                 isClosable: true,
-                position: "bottom"
+                position: "bottom",
+
             });
 
             localStorage.setItem("userInfo", JSON.stringify(data));
+
             setLoading(false);
+
             history.push('/chats')
+            window.location.reload(false);
+
+
+
         } catch (error) {
             toast({
                 title: 'Error Occured',
@@ -60,6 +67,7 @@ const Login = () => {
 
 
     }
+
     return (
         <div>
             <VStack spacing={"5px"}>
@@ -109,4 +117,4 @@ const Login = () => {
     );
 };
 
-export default Login; <h1>This is login page</h1>
+export default Login; 

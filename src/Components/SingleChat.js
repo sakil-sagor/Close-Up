@@ -35,16 +35,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
         },
     };
 
-    // socket server starting
-    useEffect(() => {
-        socket = io(ENDPOINT);
-        socket.emit("setup", user);
-        socket.on("connected", () => setSocketConnected(true));
-        // typing live single function 
-        socket.on("typing", () => setIsTyping(true));
-        socket.on("stop typing", () => setIsTyping(false));
 
-    }, [])
 
     const fetchMessages = async () => {
         if (!selectedChat) return;
@@ -78,12 +69,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             });
         }
     };
-
-    useEffect(() => {
-        fetchMessages();
-
-        selectedChatCompare = selectedChat;
-    }, [selectedChat])
 
     // send msg by click key enter 
     const sendMessage = async (event) => {
@@ -119,6 +104,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
         }
     };
+
     // send msg by click button 
     const sendMessageByClick = async () => {
         if (newMessage) {
@@ -153,6 +139,25 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             }
         }
     };
+
+
+    // socket server starting
+    useEffect(() => {
+        socket = io(ENDPOINT);
+        socket.emit("setup", user);
+        socket.on("connected", () => setSocketConnected(true));
+        // typing live single function 
+        socket.on("typing", () => setIsTyping(true));
+        socket.on("stop typing", () => setIsTyping(false));
+
+    }, [])
+
+
+    useEffect(() => {
+        fetchMessages();
+
+        selectedChatCompare = selectedChat;
+    }, [selectedChat])
 
 
     useEffect(() => {
